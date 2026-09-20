@@ -23,7 +23,16 @@ class MahasiswaWebController extends Controller
 }
 
     
+public function topIpk()
+{
+    $top10 = Mahasiswa::with('programStudi')
+        ->whereRelation('programStudi', 'nama', 'Teknik Komputer')
+        ->orderByDesc('ipk')
+        ->limit(10)
+        ->get();
 
+    return view('mahasiswa.top-ipk', ['top10' => $top10]);
+}
     /**
      * Show the form for creating a new resource.
      */

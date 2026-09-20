@@ -31,4 +31,14 @@ Route::get('/cari-mahasiswa', [MahasiswaController::class, 'cari']);
 Route::get('/data-matakuliah', [MatakuliahController::class, 'index'])->name('matakuliah.index');
 Route::get('/data-matakuliah/{kode}', [MatakuliahController::class, 'show'])->name('matakuliah.show');
 Route::get('/mahasiswa-data', [MahasiswaWebController::class,'index'])->name('mahasiswa.data');
-
+Route::get('/mahasiswa-data/create', [MahasiswaWebController::class,'create'])->name('mahasiswa.create');
+Route::post('/mahasiswa-data', [MahasiswaWebController::class,'store'])->name('mahasiswa.store');
+Route::get('/mahasiswa-data/top-ipk', [MahasiswaWebController::class, 'topIpk'])
+    ->name('mahasiswa.top-ipk');
+Route::get('/mahasiswa-data/{id}', [MahasiswaWebController::class, 'show'])
+    ->name('mahasiswa.show');
+Route::get('/mahasiswa-data/{id}', [MahasiswaWebController::class, 'show'])
+    ->name('mahasiswa.show');
+Route::get('/data-matakuliah/{kode}', [MatakuliahController::class, 'show'])
+    ->name('matakuliah.show');
+    
