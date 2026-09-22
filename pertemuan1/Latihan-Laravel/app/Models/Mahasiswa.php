@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Mahasiswa extends Model
 {
     use HasFactory;
-    protected $table = 'mahasiswa';
 protected $fillable = [
 'program_studi_id',
 'nim',
