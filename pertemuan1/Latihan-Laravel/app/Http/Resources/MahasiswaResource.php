@@ -7,14 +7,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class MahasiswaResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
-        return [
+        $semua = [
             'id' => $this->id,
             'nama' => $this->nama,
             'nim' => $this->nim,
@@ -22,8 +17,9 @@ class MahasiswaResource extends JsonResource
             'angkatan' => $this->angkatan,
             'ipk' => (float) $this->ipk,
             'jurusan' => $this->jurusan,
-            'program_studi' => $this->whenloaded('programStudi', function () {
-                return[
+            'aktif' => $this->aktif,
+            'program_studi' => $this->whenLoaded('programStudi', function () {
+                return [
                     'id' => $this->programStudi->id,
                     'nama' => $this->programStudi->nama,
                     'kode' => $this->programStudi->kode,
@@ -31,5 +27,20 @@ class MahasiswaResource extends JsonResource
             }),
             'dibuat_pada' => $this->created_at->toIso8601String(),
         ];
+
+        if ($request->filled('fields')) {
+            $diminta = array_map('trim', explode(',', $request->query('fields')));
+
+            $hasil = [];
+            foreach ($diminta as $kolom) {
+                if (array_key_exists($kolom, $semua)) {
+                    $hasil[$kolom] = $semua[$kolom];
+                }
+            }
+
+            return $hasil;
+        }
+
+        return $semua;
     }
 }

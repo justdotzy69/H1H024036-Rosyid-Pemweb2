@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Api\MahasiswaController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Api\MatakuliahController;
 Route::get('/status', function () {
     return response()->json([
         'sukses' => true,
@@ -12,3 +12,6 @@ Route::get('/status', function () {
 });
 
 Route::apiResource('mahasiswa', MahasiswaController::class);
+Route::get('/program-studi/{id}/mahasiswa', [MahasiswaController::class, 'byProgramStudi'])
+    ->name('program-studi.mahasiswa');
+Route::apiResource('matakuliah', MatakuliahController::class);

@@ -8,8 +8,8 @@ use App\Http\Requests\UpdateMahasiswaRequest;
 use App\Http\Resources\MahasiswaResource;
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
+use App\Modeld\ProgramStudi;
 use Illuminate\Http\JsonResponse;
-
 class MahasiswaController extends Controller
 {
     public function index(Request $request)
@@ -88,4 +88,43 @@ class MahasiswaController extends Controller
             'pesan' => 'Data mahasiswa berhasil dihapus',
         ]);
     }
+    public function byProgramStudi(Request $request, $id)
+{
+    $programStudi = \App\Models\ProgramStudi::find($id);
+
+    if (! $programStudi) {
+        return response()->json([
+            'sukses' => false,
+            'pesan' => 'Program studi tidak ditemukan',
+        ], 404);
+    }
+
+    $kuri = Mahasiswa::query()
+        ->with('programStudi')
+        ->where('program_studi_id', $id);
+
+    if ($request->filled('cari')) {
+        $kataKunci = $request->query('cari');
+        $kuri->where(function ($sub) use ($kataKunci) {
+            $sub->where('nama', 'like', '%' . $kataKunci . '%')
+                ->orWhere('nim', 'like', '%' . $kataKunci . '%');
+        });
+    }
+
+    if ($request->filled('angkatan')) {
+        $kuri->where('angkatan', $request->integer('angkatan'));
+    }
+
+    $urutan = $request->query('urut', 'nama');
+    $arah = $request->query('arah', 'asc');
+    $kolomDiizinkan = ['nama', 'nim', 'angkatan', 'ipk'];
+
+    if (in_array($urutan, $kolomDiizinkan, true)) {
+        $kuri->orderBy($urutan, $arah === 'desc' ? 'desc' : 'asc');
+    }
+
+    $perHalaman = min($request->integer('per_halaman', 10), 100);
+
+    return MahasiswaResource::collection($kuri->paginate($perHalaman));
+}
 }
