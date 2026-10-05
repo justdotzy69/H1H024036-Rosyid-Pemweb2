@@ -8,7 +8,7 @@ use App\Http\Requests\UpdateMahasiswaRequest;
 use App\Http\Resources\MahasiswaResource;
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
-use App\Modeld\ProgramStudi;
+use App\Models\ProgramStudi;
 use Illuminate\Http\JsonResponse;
 class MahasiswaController extends Controller
 {
