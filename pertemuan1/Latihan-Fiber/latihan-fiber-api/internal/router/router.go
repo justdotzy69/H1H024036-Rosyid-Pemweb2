@@ -1,4 +1,3 @@
-// internal/router/router.go
 package router
 
 import (
@@ -20,4 +19,20 @@ func Daftarkan(app *fiber.App) {
 	mahasiswa.Get("/", handler.DaftarMahasiswa)
 	mahasiswa.Get("/nim/:nim", handler.DetailMahasiswaByNim)
 	mahasiswa.Get("/:id", handler.DetailMahasiswa)
+	mahasiswa.Get("/", handler.DaftarMahasiswa)
+	mahasiswa.Post("/", handler.BuatMahasiswa)
+	mahasiswa.Get("/nim/:nim", handler.DetailMahasiswaByNim)
+	mahasiswa.Get("/:id", handler.DetailMahasiswa)
+	mahasiswa.Put("/:id", handler.PerbaruiMahasiswa)
+	mahasiswa.Delete("/:id", handler.HapusMahasiswa)
+	mahasiswa.Put("/:id/pulihkan", handler.PulihkanMahasiswa) 
+
+	matakuliah := api.Group("/matakuliah")
+	matakuliah.Get("/", handler.DaftarMatakuliah)
+	matakuliah.Post("/", handler.BuatMatakuliah)
+	matakuliah.Get("/:id", handler.DetailMatakuliah)
+	matakuliah.Put("/:id", handler.PerbaruiMatakuliah)
+	matakuliah.Delete("/:id", handler.HapusMatakuliah)
+	
+	api.Get("/program-studi", handler.DaftarProgramStudi)
 }
